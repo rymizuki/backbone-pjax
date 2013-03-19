@@ -10,21 +10,16 @@ Backbone.Pjax = (function () {
       this.fragment = fragment;
       var url = this.root + fragment;
  
-      if (this._hasPushState) {
-        if (options.replace) {
-          // pjaxとpushStateが重複してしまうのでreplaceStateのみを許可する？
-          // replaceStateも要らないかも
-          this.history.replaceState({}, document.title, url);
+      if (!this._hasPushState) {
+        if (this._wantsHashChange) {
+          this._updateHash(this.location, fragment, options.replace);
+          if (this.iframe && (fragment !== this.getFragment(this.getHash(this.iframe)))) {
+            if(!options.replace) this.iframe.document.open().close();
+            this._updateHash(this.iframe.location, fragment, options.replace);
+          }
+        } else {
+          return this.location.assign(url);
         }
-      } else if (this._wantsHashChange) {
-        this._updateHash(this.location, fragment, options.replace);
-        if (this.iframe && (fragment !== this.getFragment(this.getHash(this.iframe)))) {
-          if(!options.replace) this.iframe.document.open().close();
-          this._updateHash(this.iframe.location, fragment, options.replace);
-        }
- 
-      } else {
-        return this.location.assign(url);
       }
       if (options.trigger) this.loadUrl(fragment);
     }
