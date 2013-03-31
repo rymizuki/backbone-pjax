@@ -1,9 +1,11 @@
 backbone-pjax
 =============
 
+Backbone.js with jquery-pjax
+
 ## sample 
 
-Backbone.js with jquery-pjax
+
     (function () {
         "use strict";
     
@@ -31,5 +33,3 @@ Backbone.js with jquery-pjax
             }
         });
     })();
-    
-    script
